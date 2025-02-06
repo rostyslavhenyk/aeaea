@@ -10,6 +10,7 @@ init_sensor()
 init_gas_sensor()
 init_display()
 players = ["A1","A0","B0","B1","C0","C1","D1","D0"]
+userID = "A"
 
 while True:
     incoming = radio.receive()
@@ -29,13 +30,26 @@ while True:
             while not roundInfo:
                 roundInfo = radio.receive()
             if roundInfo and roundInfo.startswith("type"):
-                gameForRound = int(roundInfo[4:])                
-                game(round, games[gameForRound])
+                if len(roundInfo[4:]) == 2:
+                    gameForRound = int(roundInfo[4])
+                    simonSays = int(roundInfo[5])
+                elif len(roundInfo[4:]) == 3:
+                    gameForRound = int(roundInfo[4]+roundInfo[5])
+                    simonSays = int(roundInfo[6])
+                game(round, games[gameForRound], simonSays)
                 round += 1
             elif roundInfo and roundInfo in players:
                 pass
-        else:
-            break
+    if incoming == "win"+userID:
+        show("",0)
+        show("",1)
+        show("Winner!",2)
+        break
+    elif incoming == "lose"+userID:
+        show('',0)
+        show("",1)
+        show("Loser!",2)
+        break
 
 
 # show on third line waiting for other players (?)

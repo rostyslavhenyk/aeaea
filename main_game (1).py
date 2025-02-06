@@ -36,20 +36,29 @@ def check_action(action):
         simonSays = "Simon says "
     else:
         simonSays = """
-def game(round, action):
+def game(round, action, simon):
     show("Round: " + str(round), 0)
     sleep(200)
-    show(action, 1)
+    if simon == "1":  
+        show("Simon Says "+action, 1)
+    else:
+        show(action, 1)
+
     running = True
     success = "0"
     counter = 5
     calcedTemp = calc_temperature()
     CO2 = calc_air_quality()[2]
+
     while running:
         if counter <= 0:
-            success = "0"
+            if simon == "1":   
+                success = "0"
+            else:
+                success = "1"
             break
         display.show(str(counter),wait=False)
+
         for _ in range(10):
             if action.lower() == "shake":
                 result = check_action(action)
@@ -170,9 +179,12 @@ def game(round, action):
         counter -= 1
         
     show("",6)
+    if counter > 0 and simon == "0":        ####
+        success = "0"
     radio.send(userID+success)
     if counter == 0:
         display.show(Image.NO)
+    
 
 
 
