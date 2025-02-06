@@ -70,7 +70,7 @@ def game(round, action, simon):
                 read_data_registers()
                 tempCount = calc_temperature()
                 show("{} C".format(tempCount), 6)
-                sleep(50)
+                #sleep(50)
                 if tempCount> calcedTemp+1:
                     success = "1"
                     running = False
@@ -78,15 +78,15 @@ def game(round, action, simon):
                 read_data_registers()
                 currentCO2 = calc_air_quality()[2]
                 show("{}".format(currentCO2)+"ppm", 6)
-                sleep(50)
-                if CO2> currentCO2-15:
+                #sleep(50)
+                if currentCO2 > CO2+30:
                     success = "1"
                     running = False
             elif action.lower() == "shout":
                 microphone.set_threshold(SoundEvent.LOUD, 180)
                 microphone.set_threshold(SoundEvent.QUIET, 100)
                 show(str(microphone.sound_level()),6)
-                sleep(50)
+                #sleep(50)
                 if microphone.current_event() == SoundEvent.LOUD:
                     success = "1"
                     running = False
